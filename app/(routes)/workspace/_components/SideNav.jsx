@@ -14,12 +14,12 @@ import { toast } from 'sonner'
 
 const MAX_FILE = Number(process.env.NEXT_PUBLIC_MAX_FILE_COUNT) || 5;  // Default to 5
 
-function SideNav({params}) {
-
+function SideNav({params, workspaceData}) {
     const [documentList,setDocumentList]=useState([]);
     const {user}=useUser();
     const [loading,setLoading]=useState(false);
     const router=useRouter();
+
     useEffect(()=>{
         params&&GetDocumentList();
     },[params])
@@ -94,7 +94,7 @@ function SideNav({params}) {
         <hr className='my-5'></hr>
         <div>
             <div className='flex justify-between items-center'>
-                <h2 className='font-medium'>Workspace Name</h2>
+                <h2 className='font-medium'>{workspaceData?.workspaceName || 'Workspace'}</h2>
                 <Button size="sm" className="text-lg bg-blue-500 hover:bg-blue-700 text-white" onClick={CreateNewDocument} >
                     {loading?<Loader2Icon className='h-4 w-4 animate-spin' />:'+'}
                 </Button>
