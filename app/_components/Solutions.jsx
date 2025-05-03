@@ -1,5 +1,8 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 function Solutions() {
   const solutions = [
@@ -20,19 +23,71 @@ function Solutions() {
     }
   ]
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  }
+
+  const imageVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  }
+
   return (
     <section id="solutions" className="py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-4xl font-bold mb-4">Solutions for Every Need</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Whether you're a small team or a large enterprise, Velora has the perfect solution for you.
           </p>
-        </div>
-        <div className="space-y-20">
+        </motion.div>
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="space-y-20"
+        >
           {solutions.map((solution, index) => (
-            <div key={index} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12`}>
-              <div className="lg:w-1/2">
+            <motion.div 
+              key={index} 
+              className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12`}
+            >
+              <motion.div 
+                className="lg:w-1/2"
+                variants={imageVariants}
+              >
                 <div className="relative h-[400px] w-full rounded-xl overflow-hidden">
                   <Image
                     src={solution.image}
@@ -41,17 +96,24 @@ function Solutions() {
                     className="object-cover"
                   />
                 </div>
-              </div>
-              <div className="lg:w-1/2">
+              </motion.div>
+              <motion.div 
+                className="lg:w-1/2"
+                variants={itemVariants}
+              >
                 <h3 className="text-3xl font-bold mb-4">{solution.title}</h3>
                 <p className="text-gray-600 text-lg">{solution.description}</p>
-                <button className="mt-6 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="mt-6 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                >
                   Learn More
-                </button>
-              </div>
-            </div>
+                </motion.button>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

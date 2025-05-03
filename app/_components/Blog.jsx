@@ -1,6 +1,9 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 
 function Blog() {
   const posts = [
@@ -30,49 +33,113 @@ function Blog() {
     }
   ]
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  }
+
   return (
     <section id="blog" className="py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-4xl font-bold mb-4">Latest from Our Blog</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Stay up to date with the latest insights, tips, and trends in team collaboration and productivity.
           </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        </motion.div>
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {posts.map((post, index) => (
             <Link href={`/blog/${post.slug}`} key={index} className="group">
-              <article className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div className="relative h-48 w-full">
+              <motion.article
+                variants={itemVariants}
+                whileHover={{ y: -10 }}
+                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+              >
+                <motion.div 
+                  className="relative h-48 w-full"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <Image
                     src={post.image}
                     alt={post.title}
                     fill
                     className="object-cover"
                   />
-                </div>
+                </motion.div>
                 <div className="p-6">
-                  <div className="flex items-center gap-4 mb-3">
+                  <motion.div 
+                    className="flex items-center gap-4 mb-3"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
                     <span className="text-sm text-primary font-medium">{post.category}</span>
                     <span className="text-sm text-gray-500">{post.date}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                  </motion.div>
+                  <motion.h3 
+                    className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
                     {post.title}
-                  </h3>
-                  <p className="text-gray-600">{post.excerpt}</p>
+                  </motion.h3>
+                  <motion.p 
+                    className="text-gray-600"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {post.excerpt}
+                  </motion.p>
                 </div>
-              </article>
+              </motion.article>
             </Link>
           ))}
-        </div>
-        <div className="text-center mt-12">
+        </motion.div>
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+        >
           <Link 
             href="/blog"
             className="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
           >
             View All Posts
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
